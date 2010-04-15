@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Xero Login Example</title>
+
+	<script src="prototype.js" type="text/javascript"></script>
+	<script src="xero_login.js" type="text/javascript"></script>
+	
+	<link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+	
+</head>
+
+<body>
+
+  <div id="xero_loading" class="modal" style="display: none;">
+
+    <div id="info">
+
+      <p>
+        This div is displayed while the popup is active, and is a good place to explain what's going on, or
+        show a slick loading indicator! 
+        
+        <span class="login_text">(<strong>this text is displayed when the login window is still active</strong>).</span>
+        <span class="progress_text" style="display: none;">(<strong>this is for when your Xero Sync is in progress</strong>).</span>
+      </p>
+       
+      
+      <p>
+        (They can also <a href="#" onclick="window.xero_login.cancel(); return false;">cancel</a> the process)
+      </p>
+
+    </div>
+
+    <div id="reopen_or_cancel" style="display: none;">
+
+      <p class="intro">This div is displayed if the user has closed the popup window without completing the process.</p>
+
+      <p>They can <a href="#" onclick="window.xero_login.show_login_window(); return false;">Try Again</a> or 
+        <a href="#" onclick="window.xero_login.cancel(); return false;">Give up</a>.</p>
+
+    </div>
+
+  </div>
+  
+  <div class="connect_button">
+    
+    <p>First, fill out your Xero Login URL. Then:</p>
+    
+    <button onclick="connect_to_xero()">Connect to Xero</button>
+  
+  </div>
+
+  <script type="text/javascript">
+  
+    function connect_to_xero() {
+
+       // for the first parameter, you can specify when the user's OAuth Token is about to expire (use a format that's parseable by )
+       // or false to ignore that.
+       
+       new XeroLogin(false, function() {
+
+          // this is the callback that's executed once .logged_in() is called
+
+          alert("Connected successfully!");
+          
+          
+      
+       });
+
+     }
+  
+  </script>
+
+</body>
+</html>

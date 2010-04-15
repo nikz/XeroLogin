@@ -1,0 +1,56 @@
+h1. Xero Login
+
+This is some sample JS to help you along the path of creating a script to show the Authorization screen for Xero's API in a popup window.
+
+It's similar to the one in use in "MinuteDock":http://minutedock.com.
+
+h2. Usage
+
+First, set xero_login_url. This should point to a URL on your system where you generate a request token, and then redirect the user to the Request Token's authorize url.
+
+In MinuteDock (a Rails app), our action looks kind of like this:
+
+<pre><code>
+  def new
+    xero_gateway = Xero::Gateway.new(OAUTH_CONSUMER_TOKEN, OAUTH_CONSUMER_SECRET)
+    
+    # saving these so we can use them to authorize when the user returns
+    session[:request_token]  = xero_gateway.request_token.token
+    session[:request_secret] = xero_gateway.request_token.secret
+  
+    # now that Xero supports it, you can also specify a :callback_url here.
+    redirect_to xero_gateway.request_token.authorize_url
+  end
+   
+</code></pre>
+
+(We're using Tim Connor's most excellent "Xero Gateway Plugin":http://github.com/tlconnor/xero_gateway)
+
+Your Authorize Callback should then run the following Javascript:
+
+<pre><code>
+  window.opener.xero_login.logged_in();
+  window.close();
+   
+</code></pre>
+
+(This will close the popup window and tell XeroLogin it's no longer needed)
+
+You can invoke a XeroLogin by simply instantiating the class:
+
+<pre><code>
+  new XeroLogin(false, function() {
+
+     // this is the callback that's executed once .logged_in() is called
+     alert("Connected successfully!");
+   
+  });
+   
+</code></pre>
+
+You can specify a token expiry time for the first parameter (Xero OAuth tokens expire after 30 minutes). If you do that, then the popup will only
+be invoked if the user's token would have expired since they've loaded the page. 
+
+h2. Problems?
+
+Questions, comments & suggestions can be directed to nik@codetocustomer.com.
